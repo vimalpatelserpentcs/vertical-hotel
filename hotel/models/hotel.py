@@ -532,8 +532,8 @@ class HotelFolio(models.Model):
                                      'check_out': rec.checkout_date,
                                      'folio_id': rec.id,
                                      }
-                        folio_romline_rec = (folio_room_line_obj.search
-                                             ([('folio_id', '=', rec.id)]))
+                        folio_romline_rec = folio_room_line_obj.search
+                                             ([('folio_id', '=', rec.id)])
                         folio_romline_rec.write(room_vals)
         return super(HotelFolio, self).write(vals)
 

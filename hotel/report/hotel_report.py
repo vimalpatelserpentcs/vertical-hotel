@@ -19,10 +19,6 @@ class FolioReport(models.AbstractModel):
                       ('checkout_date', '<=', date_end)]
         tids = folio_obj.search(act_domain)
         for data in tids:
-            # checkin = data.checkin_date.\
-            #     strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-            # checkout = data.checkout_date.\
-            #     strftime(DEFAULT_SERVER_DATETIME_FORMAT)
             data_folio.append({
                 'name': data.name,
                 'partner': data.partner_id.name,
