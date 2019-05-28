@@ -19,15 +19,15 @@ class FolioReport(models.AbstractModel):
                       ('checkout_date', '<=', date_end)]
         tids = folio_obj.search(act_domain)
         for data in tids:
-            checkin = data.checkin_date.\
-                strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-            checkout = data.checkout_date.\
-                strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+            # checkin = data.checkin_date.\
+            #     strftime(DEFAULT_SERVER_DATETIME_FORMAT)
+            # checkout = data.checkout_date.\
+            #     strftime(DEFAULT_SERVER_DATETIME_FORMAT)
             data_folio.append({
                 'name': data.name,
                 'partner': data.partner_id.name,
-                'checkin': parser.parse(checkin),
-                'checkout': parser.parse(checkout),
+                'checkin': data.checkin_date,
+                'checkout': data.checkout_date,
                 'amount': data.amount_total
             })
             total_amount += data.amount_total
@@ -54,3 +54,5 @@ class FolioReport(models.AbstractModel):
             'time': time,
             'folio_data': self._get_folio_data(date_start, date_end)
         }
+
+        

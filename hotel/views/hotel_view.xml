@@ -492,16 +492,16 @@
         <field name="arch" type="xml">
             <form string="Hotel Folio">
                 <header>
-                    <button name="action_confirm" states="draft" string="Confirm Sale"
+                    <button name="action_confirm" states="draft" string="Confirm"
                         class="btn-primary" type="object" />
                     <button name="%(sale.action_view_sale_advance_payment_inv)d"
                         string="Create Invoice" type="action" class="btn-primary"
-                        attrs="{'invisible': ['|',('state', 'in', ('draft','cancel','done')), ('invoice_status', 'in', 'invoiced')]}" />
+                        attrs="{'invisible': ['|',('state', 'in', ('draft','cancel')), ('invoice_status', 'in', 'invoiced')]}" />
                     <button name="action_cancel_draft" states="cancel" string="Set to Draft"
                         type="object" icon="fa-check-square-o" class="oe_highlight" />
-                    <button name="action_cancel" string="Cancel Folio" states="sale"
+                    <button name="action_cancel" string="Cancel" states="sale"
                         type="object" icon="fa-close" class="oe_highlight" />
-                    <button name="action_cancel" string="Cancel Folio" states="draft"
+                    <button name="action_cancel" string="Cancel" states="draft"
                         icon="fa-close" type="object" class="oe_highlight" />
                     <button name="action_done" type="object" string="Set to Done"
                         states="sale" class="oe_highlight"
@@ -529,16 +529,18 @@
                                 <field name="partner_shipping_id" domain="[('parent_id','=',partner_id)]" />
                             </group>
                             <newline />
-                            <group colspan="4" col="4" invisible="1">
+                            <group colspan="4" col="4">
                                 <field name="checkin_date" />
                                 <field name="checkout_date" />
+                            </group>
+                            <group colspan="4" col="4" invisible="1">
                                 <field name="duration" readonly="1" />
                                 <field name="duration_dummy" invisible="1" />
                             </group>
                             <separator string="Room Lines" colspan="4" />
                             <field name="room_lines" colspan="4" string="Room Line" nolabel="1"
                                 context="{'checkin':checkin_date,'checkout':checkout_date,'folio':context.get('folio')}">
-                                <form string="Room Line">
+                          <!--       <form string="Room Line">
                                     <notebook>
                                         <page name="folio_name" string="Folio Line">
                                             <group col="6" colspan="4">
@@ -573,22 +575,25 @@
                                                 readonly="1" />
                                         </page>
                                     </notebook>
-                                </form>
-                                <tree string="Room Line">
-                                    <field name="name" />
+                                </form> -->
+                                <tree string="Room Line" editable="bottom">
                                     <field name="checkin_date" />
                                     <field name="checkout_date" />
                                     <field name="product_id" string="Room No" />
                                     <field name="product_uom" string="Rent(UOM)" />
                                     <field name="price_unit" string="Rent" />
-                                    <field name="price_subtotal" />
-                                    <field name="state" />
+                                    <field domain="[('type_tax_use','=','sale'),('company_id','=',parent.warehouse_id)]" name="tax_id" options="{'no_create': True}" widget="many2many_tags" />
+                                    <field groups="sale.group_discount_per_so_line" name="discount" />
+                                    <field groups="account.group_show_line_subtotals_tax_excluded" name="price_subtotal" widget="monetary" />
+                                    <field groups="account.group_show_line_subtotals_tax_included" name="price_total" widget="monetary" />
+                                    <field invisible="1" name="currency_id" />
+                                    <field invisible="1" name="state" />
                                 </tree>
                             </field>
                             <separator string="Service Lines" colspan="4" />
                             <field name="service_lines" colspan="4" string="Service Line"
                                 nolabel="1" context="{'checkin':checkin_date,'checkout':checkout_date}">
-                                <form name="service_line" string="Service Line">
+                                <!-- <form name="service_line" string="Service Line">
                                     <notebook>
                                         <page name="service_line" string="Service Line">
                                             <group col="4" colspan="4">
@@ -625,10 +630,10 @@
                                                 readonly="1" />
                                         </page>
                                     </notebook>
-                                </form>
-                                <tree string="Service Line">
-                                    <field name="name" />
+                                </form> -->
+                                <tree string="Service Line" editable="bottom">
                                     <field name="product_id" />
+                                    <field name="name" />
                                     <field name="product_uom_qty" />
                                     <field name="price_unit" />
                                     <field name="price_subtotal" />
