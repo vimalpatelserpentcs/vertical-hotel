@@ -568,13 +568,15 @@ class HotelFolio(models.Model):
                 room_list = product_obj.browse(list(new_rooms))
                 for rm in room_list:
                     room_obj = h_room_obj.search([('name', '=', rm.name)])
-                    room_obj.write({'isroom': False})
-                    vals = {'room_id': room_obj.id,
-                            'check_in': folio_obj.checkin_date,
-                            'check_out': folio_obj.checkout_date,
-                            'folio_id': folio_obj.id,
-                            }
-                    folio_room_line_obj.create(vals)
+                    for room_id in room_obj:
+                        room_id.write({'isroom': False})
+
+                        vals = {'room_id': room_id.id,
+                                'check_in': folio_obj.checkin_date,
+                                'check_out': folio_obj.checkout_date,
+                                'folio_id': folio_obj.id,
+                                }
+                        folio_room_line_obj.create(vals)
             if len(list(new_rooms)) == 0:
                 room_list_obj = product_obj.browse(room_lst1)
                 for rom in room_list_obj:
